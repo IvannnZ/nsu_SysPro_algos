@@ -1,5 +1,5 @@
 #include "stdio.h"
-
+#include <time.h>
 
 #define max(X, Y) (((X) > (Y)) ? (X) : (Y))
 
@@ -48,6 +48,17 @@ unsigned long multiply(unsigned long a, unsigned long b) {
     return _multiply(a, b, max(len_of_num(a), len_of_num(b)));
 }
 
+unsigned long multiply_column(unsigned long a, unsigned long b) {
+    unsigned long answer = 0;
+    int c = 0;
+    while (b != 0) {
+        answer += (a * (b & 1)) << c;
+        c++;
+        b = b >> 1;
+    }
+    return answer;
+}
+
 void auto_test();
 
 int main() {
@@ -69,49 +80,49 @@ int main() {
 
 void auto_test() {
     unsigned long a = 1, b = 1;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
 
     a = 50, b = 1;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
     a = 20, b = 47;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
 
     a = 121453, b = 5141849;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
 
 
     a = 123456789, b = 123456789;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
 
     a = 545, b = 0;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
     int i = 1;
     while (i > 0) {
-        if ((i - 1) * (i - 1) == multiply(i - 1, i - 1)) {
+        if (multiply_column(i - 1, i - 1) == multiply(i - 1, i - 1)) {
             printf("%d * %d = %lu is correct\n", i - 1, i - 1, multiply(i - 1, i - 1));
         } else {
             printf("%d * %d = %lu isn`t correct\n", i - 1, i - 1,
@@ -120,10 +131,28 @@ void auto_test() {
         i *= 2;
     }
     a = (1 << (sizeof(int) * 8) - 1) - 1, b = 1;
-    if (a * b == multiply(a, b)) {
-        printf("%d * %d is correct\n", a, b);
+    if (multiply_column(a, b) == multiply(a, b)) {
+        printf("%lu * %lu is correct\n", a, b);
     } else {
-        printf("%d * %d isn`t correct\n", a, b);
+        printf("%lu * %lu isn`t correct\n", a, b);
     }
+    int num;
+    printf("Enter number of operation for bench:");
+    scanf("%d", &num);
+    struct timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+    unsigned long long time_start = spec.tv_nsec;
+    for (int i = 0; i < num; i++) {
+        a = multiply(i, i);
+    }
+    clock_gettime(CLOCK_REALTIME, &spec);
+    printf("time need to fast alg:%llu nsec\n", spec.tv_nsec - time_start);
 
+    clock_gettime(CLOCK_REALTIME, &spec);
+    time_start = spec.tv_nsec;
+    for (int i = 0; i < num; i++) {
+        a = multiply_column(i, i);
+    }
+    clock_gettime(CLOCK_REALTIME, &spec);
+    printf("time need to slow alg:%llu nsec\n", spec.tv_nsec - time_start);
 }
