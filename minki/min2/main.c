@@ -10,7 +10,7 @@ struct halves_of_num {
 
 int counter = 0;
 
-int len_of_num(unsigned long num) {
+int len_of_num_in_bin_sys(unsigned long num) {
     //первая степень двойки которая больше чем длина числа
     unsigned long long pivot = 1;
     int len = 1;
@@ -45,7 +45,7 @@ unsigned long _multiply(unsigned long a, unsigned long b, int max_len) {
 
 unsigned long multiply(unsigned long a, unsigned long b) {
     counter = 0;
-    return _multiply(a, b, max(len_of_num(a), len_of_num(b)));
+    return _multiply(a, b, max(len_of_num_in_bin_sys(a), len_of_num_in_bin_sys(b)));
 }
 
 unsigned long multiply_column(unsigned long a, unsigned long b) {
