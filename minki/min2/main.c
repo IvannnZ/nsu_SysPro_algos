@@ -10,6 +10,7 @@ struct halves_of_num {
 
 int counter = 0;
 
+
 int len_of_num_in_bin_sys(unsigned long num) {
     //первая степень двойки которая больше чем длина числа
     unsigned long long pivot = 1;
@@ -120,21 +121,23 @@ void auto_test() {
     } else {
         printf("%lu * %lu isn`t correct\n", a, b);
     }
-    int i = 1;
-    while (i > 0) {
-        if (multiply_column(i - 1, i - 1) == multiply(i - 1, i - 1)) {
-            printf("%d * %d = %lu is correct\n", i - 1, i - 1, multiply(i - 1, i - 1));
-        } else {
-            printf("%d * %d = %lu isn`t correct\n", i - 1, i - 1,
-                   multiply(i - 1, i - 1));// пишет это потому-что си перемножает в int
-        }
-        i *= 2;
-    }
+
     a = (1 << (sizeof(int) * 8) - 1) - 1, b = 1;
     if (multiply_column(a, b) == multiply(a, b)) {
         printf("%lu * %lu is correct\n", a, b);
     } else {
         printf("%lu * %lu isn`t correct\n", a, b);
+    }
+
+    unsigned long i = 1;
+    while (i < 4294967295 + 2) { // 4294967295 это число при котором перемножение не упирается в потолок значений
+        if (multiply_column(i - 1, i - 1) == multiply(i - 1, i - 1)) {
+            printf("%ld * %ld = %lu is correct\n", i - 1, i - 1, multiply(i - 1, i - 1));
+        } else {
+            printf("%ld * %ld = %lu isn`t correct\n", i - 1, i - 1,
+                   multiply(i - 1, i - 1));// пишет это потому-что си перемножает в int
+        }
+        i *= 2;
     }
     int num;
     printf("Enter number of operation for bench:");
