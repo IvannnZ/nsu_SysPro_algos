@@ -3,17 +3,19 @@
 
 #define max(X, Y) (((X) > (Y)) ? (X) : (Y))
 
+#define num_type unsigned long
+
 struct halves_of_num {
-    unsigned long first_half;
-    unsigned long second_half;
+    num_type first_half;
+    num_type second_half;
 };
 
 int counter = 0;
 
 
-int len_of_num_in_bin_sys(unsigned long num) {
+int len_of_num_in_bin_sys(num_type num) {
     //первая степень двойки которая больше чем длина числа
-    unsigned long long pivot = 1;
+    unsigned long long pivot = 1; // тут не знаю как заменить
     int len = 1;
     while (num > pivot) {
         pivot = pivot + (pivot << len);
@@ -22,7 +24,7 @@ int len_of_num_in_bin_sys(unsigned long num) {
     return len;
 }
 
-struct halves_of_num num_separator(unsigned long a, unsigned long len) {
+struct halves_of_num num_separator(num_type a, num_type len) {
     struct halves_of_num answ;
     answ.first_half = (a >> (len >> 1));
     answ.second_half = a - (answ.first_half << (len >> 1));
@@ -30,27 +32,27 @@ struct halves_of_num num_separator(unsigned long a, unsigned long len) {
 }
 
 
-unsigned long _multiply(unsigned long a, unsigned long b, int max_len) {
+num_type _multiply(num_type a, num_type b, int max_len) {
     if (max_len <= 3) {
         return a * b;
     }
     struct halves_of_num halfs_a = num_separator(a, max_len);
     struct halves_of_num halfs_b = num_separator(b, max_len);
-    unsigned long first_step = _multiply(halfs_a.first_half, halfs_b.first_half, max_len >> 1);
-    unsigned long second_step = _multiply(halfs_a.second_half, halfs_b.second_half, max_len >> 1);
-    unsigned long third_step = _multiply(halfs_a.first_half + halfs_a.second_half,
-                                         halfs_b.first_half + halfs_b.second_half, max_len >> 1);
-    unsigned long fourth_step = third_step - second_step - first_step;
+    num_type first_step = _multiply(halfs_a.first_half, halfs_b.first_half, max_len >> 1);
+    num_type second_step = _multiply(halfs_a.second_half, halfs_b.second_half, max_len >> 1);
+    num_type third_step = _multiply(halfs_a.first_half + halfs_a.second_half,
+                                    halfs_b.first_half + halfs_b.second_half, max_len >> 1);
+    num_type fourth_step = third_step - second_step - first_step;
     return ((first_step << max_len) + second_step + (fourth_step << (max_len >> 1)));
 }
 
-unsigned long multiply(unsigned long a, unsigned long b) {
+num_type multiply(num_type a, num_type b) {
     counter = 0;
     return _multiply(a, b, max(len_of_num_in_bin_sys(a), len_of_num_in_bin_sys(b)));
 }
 
-unsigned long multiply_column(unsigned long a, unsigned long b) {
-    unsigned long answer = 0;
+num_type multiply_column(num_type a, num_type b) {
+    num_type answer = 0;
     int c = 0;
     while (b != 0) {
         answer += (a * (b & 1)) << c;
@@ -64,7 +66,7 @@ void auto_test();
 
 int main() {
 //не работает на отрицательных(можно сделать, но не вижу смысла)
-    unsigned long a, b;
+    num_type a, b;
     printf("Enter -1 for start auto test, or\nEnter first num:");
     scanf("%lu", &a);
     if (a == -1) {
@@ -80,7 +82,7 @@ int main() {
 
 
 void auto_test() {
-    unsigned long a = 1, b = 1;
+    num_type a = 1, b = 1;
     if (multiply_column(a, b) == multiply(a, b)) {
         printf("%lu * %lu is correct\n", a, b);
     } else {
@@ -144,7 +146,7 @@ void auto_test() {
     scanf("%d", &num);
     struct timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
-    unsigned long long time_start = spec.tv_nsec;
+    num_type long time_start = spec.tv_nsec;
     for (int i = 0; i < num; i++) {
         a = multiply(i, i);
     }
