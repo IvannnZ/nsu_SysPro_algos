@@ -10,8 +10,6 @@ struct halves_of_num {
     num_type second_half;
 };
 
-int counter = 0;
-
 
 int len_of_num_in_bin_sys(num_type num) {
     //первая степень двойки которая больше чем длина числа
@@ -47,7 +45,6 @@ num_type _multiply(num_type a, num_type b, int max_len) {
 }
 
 num_type multiply(num_type a, num_type b) {
-    counter = 0;
     return _multiply(a, b, max(len_of_num_in_bin_sys(a), len_of_num_in_bin_sys(b)));
 }
 
