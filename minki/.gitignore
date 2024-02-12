@@ -3,4 +3,6 @@ main
 test
 min2/test.c
 min1/test.c
-
+min4/test.py
+min4/test2.py
+min4/dir_for_test
