@@ -2,8 +2,8 @@ def arr_step_by_len(len):
     n = 2
     while len > 2 ** n - 1:
         n += 1
-    while n > 0:
-        n-=1
+    while n > 1:
+        n -= 1
         yield 2 ** n - 1
 
 
@@ -16,10 +16,11 @@ def sort_by_n(arr: list[int], step: int, start: int) -> list[int]:
     for i in range(start + step, len(arr), step):
         if arr[i - step] > arr[i]:
             pivot = i
-            while pivot >= step and arr[pivot-step] > arr[pivot]:
+            while pivot >= step and arr[pivot - step] > arr[pivot]:
                 arr = swap(arr, pivot, pivot - step)
                 pivot -= step
     return arr
+
 
 def my_sort(arr: list[int]) -> list[int]:
     for i in arr_step_by_len(len(arr)):
@@ -30,11 +31,17 @@ def my_sort(arr: list[int]) -> list[int]:
     pass
 
 
-my_sort([3,0,6,1,5])
+def hIndex(citations: list[int]) -> int:
+    citations = my_sort(citations)
+    for i in range(len(citations)):
+        print(i)
+        if citations[len(citations) - 1 - i] <= i:
+            return i
+    return 1
 
-class Solution:
-    def hIndex(self, citations: list[int]) -> int:
-        citations = my_sort(citations)
-        for i in range(len(citations)):
-            if citations[i] < i:
-                return i - 1
+
+print(hIndex([3, 0, 6, 1, 5]))
+
+print(hIndex([1, 1, 3]))
+
+print(hIndex([1]))
