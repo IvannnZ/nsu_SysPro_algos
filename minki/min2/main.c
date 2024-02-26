@@ -12,6 +12,9 @@ struct halves_of_num {
 
 
 int len_of_num_in_bin_sys(num_type num) {
+    for (int i= 0; i<6;i++){
+        printf("d");
+    }
     //первая степень двойки которая больше чем длина числа
     unsigned long long pivot = 1; // тут не знаю как заменить
     int len = 1;

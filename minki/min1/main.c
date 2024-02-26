@@ -39,12 +39,12 @@ struct quotient_remainder division_column(unsigned long divisible, unsigned long
         return answer;//или можно развалиться
     }
 
-    int len_divisible = len_of_num_in_bin_sys(divisible);
+    int len_divisible = len_of_num_in_bin_sys(divisible);//за log2(n)
     unsigned long pivot = 0;
     // кусок кода (1) конец
     //он выполняется всегда, независимо от входных данных, кроме как делитель = 0
 
-    //кусок кода (2) конец
+    //кусок кода (2) начало
     for (int i = len_divisible; i > 0; i--) {
         pivot = pivot << 1;
         pivot += take_a_bit(&divisible, i);
@@ -56,7 +56,7 @@ struct quotient_remainder division_column(unsigned long divisible, unsigned long
     }
     //кусок кода (2) конец
     /*
-     выполнется за log2(делимое), так как len_divisible примерно равняется log2(делимое), так как равняется длине в двоичной системе счисления
+     цикл работает за log2(делимое), так как len_divisible примерно равняется log2(делимое), так как равняется длине в двоичной системе счисления
      а всё что внутри выполняется за 0(1)
     */
     answer.remainder = pivot;
