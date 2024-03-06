@@ -1,7 +1,6 @@
-#include "stdio.h"
 #include "malloc.h"
+#include "stdio.h"
 #include "stdlib.h"
-
 
 void scanArr(int *a, size_t al) {
     for (size_t i = 0; i < al; i++) {
@@ -16,13 +15,11 @@ void printArr(int *a, size_t al) {
     printf("\n");
 }
 
-
 void swap(int *a, int *b) {
     int c = *a;
     *a = *b;
     *b = c;
 }
-
 void quick_sort(int *arr, int len_arr) {
     if (len_arr == 1 || len_arr == 0) {
         return;
@@ -61,15 +58,41 @@ void quick_sort(int *arr, int len_arr) {
     return;
 }
 
+
+void quick_sort_hoare(int *arr, int first, int last) {
+    int i = first;
+    int j = last;
+    printf("%d,%d\n", first, last);
+    int x = arr[(rand() % (last - first)) + 1];
+
+    do {
+        while (arr[i] < x) i++;
+        while (arr[j] > x) j--;
+
+        if (i <= j) {
+            if (arr[i] > arr[j]) {
+                swap(arr + i, arr + j);
+            }
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (i < last)
+        quick_sort_hoare(arr, i, last);
+    if (first < j)
+        quick_sort_hoare(arr, first, j);
+}
+
 int main() {
     printf("enter len array:");
-    size_t len_arr;
+    int len_arr;
     scanf("%zd", &len_arr);
     int *arr = (int *) malloc(sizeof(int) * len_arr);
     scanArr(arr, len_arr);
 
-    quick_sort(arr, len_arr);
-
+//    quick_sort(arr, len_arr);
+    quick_sort_hoare(arr, 0, len_arr - 1);
     printArr(arr, len_arr);
 
     return 0;
