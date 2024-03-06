@@ -91,7 +91,7 @@ int main() {
     int *arr = (int *) malloc(sizeof(int) * len_arr);
     scanArr(arr, len_arr);
 
-//    quick_sort(arr, len_arr);
+//    take_ways(arr, len_arr);
     quick_sort_hoare(arr, 0, len_arr - 1);
     printArr(arr, len_arr);
 
