@@ -2,6 +2,7 @@ class non_groving_piramide:
     def __init__(self):
         self.arr = []
 
+
     def _sift_from_the_bottom(self):
         iter = len(self.arr) - 1
         before_iter = (iter - 1) // 2
