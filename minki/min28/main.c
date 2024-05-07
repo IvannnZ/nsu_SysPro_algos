@@ -67,7 +67,7 @@ int check_to_blum_filter(struct blum_filter bf, unsigned int value) {
 
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
+    if (argc != 2) {
         return 42;
     }
     printf("ABOBA\n");//thisout this this code didn`t work
