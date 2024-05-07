@@ -21,14 +21,12 @@ struct blum_filter {
 unsigned int get_bit(const unsigned int *arr_ptr, unsigned int bit_num) {
     unsigned int place_in_arr = bit_num / sizeof(unsigned int);
     unsigned int place_in_num = bit_num % sizeof(unsigned int);
-    printf("%d, %d\n", (1 << place_in_num), place_in_num);
     return arr_ptr[place_in_arr] && (1 << place_in_num);
 }
 
 void set_bit(unsigned int *arr_ptr, unsigned int bit_num) {
     unsigned int place_in_arr = bit_num / sizeof(unsigned int);
     unsigned int place_in_num = bit_num % sizeof(unsigned int);
-    printf("%d, %d\n", (1 << place_in_num), place_in_num);
     arr_ptr[place_in_arr] = arr_ptr[place_in_arr] || (1 << place_in_num);
 }
 
@@ -43,8 +41,6 @@ struct blum_filter create_blum_filter(size_t number_request, float error_probabi
     bf.data = (unsigned int *) malloc(
             sizeof(unsigned int) * (size_t) ceilf(ceilf((float) bf.size / 8) / (float) sizeof(unsigned int)));
     is_null(bf.data);
-    printf("data size:%lu\n",
-           sizeof(unsigned int) * (size_t) ceilf(ceilf((float) bf.size / 8) / (float) sizeof(unsigned int)));
     bf.number_hash = (size_t) (log(2) * (float) bit_for_elem);
     bf.arr_hash_seed = (unsigned int *) malloc(sizeof(unsigned int) * bf.number_hash);
     is_null(bf.arr_hash_seed);
@@ -55,16 +51,12 @@ struct blum_filter create_blum_filter(size_t number_request, float error_probabi
 }
 
 void add_to_blum_filter(struct blum_filter bf, unsigned int value) {
-    printf("start add value:%d\n", value);
     for (int i = 0; i < bf.number_hash; i++) {
         set_bit(bf.data, hash(value, bf.arr_hash_seed[i]) % bf.size);
-        printf("hash:%zu, seed:%zu\n", hash(value, bf.arr_hash_seed[i]) % bf.size, bf.arr_hash_seed[i]);
     }
-    printf("end %d,%d,%d,%d\n\n", bf.data[0], bf.data[1], bf.data[2], bf.data[3]);
 }
 
 int check_to_blum_filter(struct blum_filter bf, unsigned int value) {
-
     for (int i = 0; i < bf.number_hash; i++) {
         if (get_bit(bf.data, hash(value, bf.arr_hash_seed[i]) % bf.size) == 0) {
             return 0;
@@ -93,7 +85,3 @@ int main(int argc, char *argv[]) {
         printf("%d in bitset: %d\n", i * 2, check_to_blum_filter(bf, i * 2));
     }
 }
-//    printf("%d, %d, %d\n", hash(9, 564894), hash(9, 564894), hash(9, 564894));
-//    printf("%d, %d, %d\n", hash(52, 564894), hash(52, 564894), hash(52, 564894));
-//    printf("%d, %d, %d\n", hash(42, 564894), hash(42, 564894), hash(42, 564894));
-//    printf("%d, %d, %d\n", hash(10, 564894), hash(10, 564894), hash(10, 564894));
