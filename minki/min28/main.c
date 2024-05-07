@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     if (argc != 3) {
         return 42;
     }
-    printf("\n\n%s\n\n", argv[1]);
+    printf("ABOBA\n");//thisout this this code didn`t work
     FILE *input = fopen(argv[1], "r");
     is_null(input);
     size_t number_request;
