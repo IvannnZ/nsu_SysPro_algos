@@ -1,3 +1,6 @@
+from random import randint
+
+
 def base_matrix_multiply(matrix1, matrix2):
     """
     O(m*n*o)
@@ -106,13 +109,13 @@ def _shtrasen7_myltyply(matrix1, matrix2, size):
         a, b, c, d = split_for_matrix(matrix1, size)
         e, f, g, h = split_for_matrix(matrix2, size)
 
-        p1 = _shtrasen7_myltyply(a, matr_subtraction(f, h),size//2)
-        p2 = _shtrasen7_myltyply(matr_summ(a, b), h,size//2)
-        p3 = _shtrasen7_myltyply(matr_summ(c, d), e,size//2)
-        p4 = _shtrasen7_myltyply(d, matr_subtraction(g, e),size//2)
-        p5 = _shtrasen7_myltyply(matr_summ(a, d), matr_summ(e, h),size//2)
-        p6 = _shtrasen7_myltyply(matr_subtraction(b, d), matr_summ(g, h),size//2)
-        p7 = _shtrasen7_myltyply(matr_subtraction(a, c), matr_summ(e, f),size//2)
+        p1 = _shtrasen7_myltyply(a, matr_subtraction(f, h), size // 2)
+        p2 = _shtrasen7_myltyply(matr_summ(a, b), h, size // 2)
+        p3 = _shtrasen7_myltyply(matr_summ(c, d), e, size // 2)
+        p4 = _shtrasen7_myltyply(d, matr_subtraction(g, e), size // 2)
+        p5 = _shtrasen7_myltyply(matr_summ(a, d), matr_summ(e, h), size // 2)
+        p6 = _shtrasen7_myltyply(matr_subtraction(b, d), matr_summ(g, h), size // 2)
+        p7 = _shtrasen7_myltyply(matr_subtraction(a, c), matr_summ(e, f), size // 2)
 
         a_answ = matr_summ(matr_subtraction(matr_summ(p5, p4), p2), p6)
         b_answ = matr_summ(p1, p2)
@@ -159,3 +162,22 @@ print(shtrasen7_myltyply(mat1, mat2))
 print(base_matrix_multiply(mat2, mat1))
 print(shtrasen8_myltyply(mat2, mat1))
 print(shtrasen7_myltyply(mat2, mat1))
+
+size = 600
+
+mat3 = [[randint(0, 1000)] * size] * size
+mat4 = [[randint(0, 1000)] * size] * size
+
+print(1)
+a1 = base_matrix_multiply(mat3, mat4)
+
+mat3 = [[randint(0, 1000)] * size] * size
+mat4 = [[randint(0, 1000)] * size] * size
+print(2)
+a2 = shtrasen8_myltyply(mat3, mat4)
+
+mat3 = [[randint(0, 1000)]*size]*size
+mat4 = [[randint(0, 1000)]*size]*size
+print(3)
+a3 = shtrasen7_myltyply(mat3, mat4)
+print(4)
