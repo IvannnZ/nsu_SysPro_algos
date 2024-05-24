@@ -132,6 +132,6 @@ def auto_test():
     b = -10
     print(f"{a} * {b} is {multiply(a, b)}")
 
-# print("Answer:", multiply(int(input("Enter a:")), int(input("Enter b:"))))
+print("Answer:", multiply(int(input("Enter a:")), in(input("Enter b:"))))
 
 auto_test()
