@@ -124,7 +124,14 @@ def auto_test():
     else:
         print(f"{a} * {b} isn`t correct", multiply_column(a, b), multiply(a, b))
 
+    a = -50
+    b = -10
+    print(f"{a} * {b} is {multiply(a, b)}") # column multiply cant work with -
 
-print("Answer:", multiply(int(input("Enter a:")), int(input("Enter b:"))))
+    a = 50
+    b = -10
+    print(f"{a} * {b} is {multiply(a, b)}")
+
+# print("Answer:", multiply(int(input("Enter a:")), int(input("Enter b:"))))
 
 auto_test()
