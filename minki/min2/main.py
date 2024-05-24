@@ -21,7 +21,6 @@ def len_of_num_in_bin_sys(num):
     while num > pivot:
         pivot = pivot + (pivot << len)
         len = len << 1
-    print(len)
     return len
 
 
@@ -128,4 +127,4 @@ def auto_test():
 
 print("Answer:", multiply(int(input("Enter a:")), int(input("Enter b:"))))
 
-#auto_test()
+auto_test()
