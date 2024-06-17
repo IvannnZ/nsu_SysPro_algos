@@ -1,3 +1,5 @@
+//https://habr.com/ru/articles/512106/
+
 #include <cassert>
 #include <functional>
 #include <iostream>

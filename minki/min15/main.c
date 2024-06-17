@@ -48,19 +48,30 @@ void print_vector(struct vector arr) {
 }
 
 int main() {
-    printf("enter num (without 0. -1), to add at end, or -1 to remove last element, or 0 to end\n");
     struct vector arr = init_vector(0);
-
-    int scan;
-    scanf("%d", &scan);
-    while (scan != 0) {
-        if (scan == -1) {
+    printf("enter num or e mean end, d mean dell\n");
+    int c;
+    while ((c = getchar()) != 'e') {
+        int num = 0;
+        if (c == 'd') {
             arr = pop(arr);
+            c = getchar();
         } else {
-            arr = add(arr, scan);
+            int is_minus = 1;
+            if (c == '-') {
+                is_minus = -1;
+            } else {
+                num = c - '0';
+            }
+            while ((c = getchar()) != '\n') {
+                num *= 10;
+                num += (c - '0');
+            }
+            num*=is_minus;
+            arr = add(arr, num);
         }
         print_vector(arr);
-        scanf("%d", &scan);
     }
+
     delite(arr);
 }
