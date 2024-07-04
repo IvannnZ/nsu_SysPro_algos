@@ -12,8 +12,8 @@ void is_null(void *ptr) {
 }
 
 struct blum_filter {
-    size_t size;
-    size_t number_hash;
+    int size;
+    int number_hash;
     float *arr_hash_seed;
     unsigned int *data;
 };
@@ -30,24 +30,22 @@ void set_bit(unsigned int *arr_ptr, unsigned int bit_num) {
     arr_ptr[place_in_arr] = arr_ptr[place_in_arr] || (1 << place_in_num);
 }
 
-unsigned int hash(unsigned int value, unsigned int seed, int max_value) {
+unsigned int hash(unsigned int value, float seed, int max_value) {
     int a;
     return (unsigned int) (modff(value * seed, &a) * max_value);
 }
 
-struct blum_filter create_blum_filter(size_t number_request, float error_probability) {
+struct blum_filter create_blum_filter(int number_request, float error_probability) {
     struct blum_filter bf;
-    size_t bit_for_elem = (size_t) (-log2f(error_probability) / log(2));
+    int bit_for_elem = (int) (-log2((double) error_probability) / log((double) 2));
     bf.size = bit_for_elem * number_request;
-    bf.data = (unsigned int *) malloc(
-            sizeof(unsigned int) * (size_t) ceilf(ceilf((float) bf.size / 8) / (float) sizeof(unsigned int)));
-    printf("%d", sizeof(unsigned int) * (size_t) ceilf(ceilf((float) bf.size / 8) / (float) sizeof(unsigned int)));
+    bf.data = (unsigned int *) malloc(((bf.size + sizeof(unsigned int)) / sizeof(unsigned int) + 7) / 8);
     is_null(bf.data);
-    bf.number_hash = (size_t) (log(2) * (float) bit_for_elem);
+    bf.number_hash = (int) -floor(log2(error_probability));
     bf.arr_hash_seed = (float *) malloc(sizeof(float) * bf.number_hash);
     is_null(bf.arr_hash_seed);
     for (int i = 0; i < bf.number_hash; i++) {
-        bf.arr_hash_seed[i] =  (float )rand() * 0.00000001;
+        bf.arr_hash_seed[i] = (float) rand() / (float) (RAND_MAX);
     }
     return bf;
 }
@@ -69,22 +67,48 @@ int check_to_blum_filter(struct blum_filter bf, unsigned int value) {
 
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        return 42;
-    }
-//    printf("ABOBA\n");//thisout this this code didn`t work
-    FILE *input = fopen(argv[1], "r");
+//    if (argc != 2) {
+//        return 42;
+//    }
+//    FILE *input = fopen(argv[1], "r");
+//
+//    is_null(input);
+//    int number_request;
+//    float error_probability;
+//    fscanf(input, "%d %f", &number_request, &error_probability);
+//    struct blum_filter bf = create_blum_filter(number_request, error_probability);
+//    unsigned int ip_adr;
+//    while (fscanf(input, "%d", &ip_adr) != EOF) {
+//        add_to_blum_filter(bf, ip_adr);
+//    }
+//    for (unsigned int i = 0; i < number_request; i++) {
+//        printf("%d in bitset: %d\n", i * 2, check_to_blum_filter(bf, i * 2));
+//    }
+//    printf("enter number request, and error_probability\n");
 
-    is_null(input);
-    size_t number_request;
-    float error_probability;
-    fscanf(input, "%zd %f", &number_request, &error_probability);
+    int number_request = 500;
+    float error_probability = (float) 0.1;
     struct blum_filter bf = create_blum_filter(number_request, error_probability);
-    unsigned int ip_adr;
-    while (fscanf(input, "%d", &ip_adr) != EOF) {
-        add_to_blum_filter(bf, ip_adr);
-    }
+
     for (unsigned int i = 0; i < number_request; i++) {
-        printf("%d in bitset: %d\n", i * 2, check_to_blum_filter(bf, i * 2));
+        add_to_blum_filter(bf, 1 + (i * 2));
     }
+
+    for (unsigned int i = 0; i < number_request; i++) {
+        if (check_to_blum_filter(bf, 1 + (i * 2)) == 0) {
+            return 52;
+        }
+    }
+
+    int count_incorrect_error = 0;
+    for (unsigned int i = 0; i < number_request; i++) {
+        if (check_to_blum_filter(bf, i * 2) == 1) {
+            count_incorrect_error++;
+        }
+    }
+//    printf("%f", (float )count_incorrect_error / (float )number_request);
+    printf("number_incorrect_error:%d\npersent_errors:%f",
+           count_incorrect_error, ((float) count_incorrect_error / (float) number_request));
+
+
 }
